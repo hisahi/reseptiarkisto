@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Raaka-ainetilastot - Reseptiarkisto</title>
+    </head>
+    <body>
+        <h1>Raaka-ainetilastot</h1>
+        <h2>Raaka-aineet</h2>
+        <ul>
+            <li th:each="tilasto : ${aineet}">
+                <span th:text="${tilasto.getAine()}">nimi</span>: <span th:text="${tilasto.getReseptiLkm()}">0</span> reseptissä
+            </li>
+        </ul>
+        <br />
+        <a href="/">Palaa</a>
+    </body>
+    
+</html>
+

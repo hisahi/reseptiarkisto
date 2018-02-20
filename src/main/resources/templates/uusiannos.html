@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Uusi resepti - Reseptiarkisto</title>
+    </head>
+    <body>
+        <h1>Reseptiarkisto</h1>
+        <h2>Uusi resepti</h2>
+        <div id="base" style="display:none">
+            <hr />
+            <h3 class="title" style="display:inline">Ainesosa #0</h3> - <a href="javascript:void(0)" onclick="moveUp(this)">Ylös</a> - <a href="javascript:void(0)" onclick="moveDown(this)">Alas</a> - <a href="javascript:void(0)" onclick="deleteIngredient(this)">Poista</a> <br />
+            <span>Ainesosa: </span>
+            <select class="raakaaine" name="aine0osa" required>
+                <option disabled selected value style="display:none">VALITSE!</option>
+                <option th:each="aine : ${ainelista}" th:value="${aine.getId()}" th:text="${aine.getNimi()}">.</option>
+            </select>
+            <span>määrä: </span>
+            <input class="lkm" type="number" name="aine0lkm" min="0" max="99999" size=6 required />
+            <input class="yksikko" type="text" name="aine0yksikko" placeholder="kpl" size=6 />
+            <br />
+            <span>Lisäohje ainesosalle: </span>
+            <textarea class="lisaohje" rows="3" cols="80" name="aine0ohje" form="annos"></textarea>
+        </div>
+        <form action="/uusiannos" method="POST" id="annos">
+            <span>Annoksen nimi: </span>
+            <input type="text" name="nimi" size="50" required/>
+            <p>Lisäohje ainesosalle:</p>
+            <textarea rows="25" cols="80" name="ohje" form="annos"></textarea>
+            <br />
+            <div id="ainesosat">
+            </div>
+            <hr />
+            <br />
+            <a href="javascript:void(0)" onclick="newIngredient()">Uusi ainesosa</a><br />
+            <br />
+            <input type="submit" value="Lähetä"/>
+        </form>
+        <script type="text/javascript">
+            function updateIngredientOrders() {
+                var children = document.getElementById("ainesosat").children;
+                for (var i = 0; i < children.length; ++i) {
+                    var child = children[i];
+                    child.id = "aine" + n;
+                    var n = (i + 1);
+                    child.querySelector(".title").textContent = "Ainesosa #" + n;
+                    child.querySelector(".raakaaine").name = "aine" + n + "osa";
+                    child.querySelector(".lkm").name = "aine" + n + "lkm";
+                    child.querySelector(".yksikko").name = "aine" + n + "yksikko";
+                    child.querySelector(".lisaohje").name = "aine" + n + "ohje";
+                }
+            }
+            function moveUp(el) {
+                el.parentNode.parentNode.insertBefore(el.parentNode, el.parentNode.previousSibling);
+                updateIngredientOrders();
+            }
+            function moveDown(el) {
+                if (!el.parentNode.nextSibling) return;
+                el.parentNode.parentNode.insertBefore(el.parentNode, el.parentNode.nextSibling.nextSibling);
+                updateIngredientOrders();
+            }
+            function deleteIngredient(el) {
+                el.parentNode.parentNode.removeChild(el.parentNode);
+                updateIngredientOrders();
+            }
+            function newIngredient() {
+                var dupNode = document.getElementById("base").cloneNode(true);
+                dupNode.style.display = "block";
+                dupNode.id = "newNode";
+                document.getElementById("ainesosat").appendChild(dupNode);
+                updateIngredientOrders();
+            }
+        </script>
+        <br />
+        <br />
+        <a href="/">Palaa</a>
+        
+    </body>
+    
+</html>
+

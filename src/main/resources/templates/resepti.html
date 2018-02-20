@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Reseptiarkisto</title>
+    </head>
+    <body>
+        <i><h1 th:text="${nimi}">Reseptiarkisto</h1></i>
+        <h2>Ainesosat</h2>
+        <ol>
+            <li th:each="osa : ${ainesosat}">
+                <span th:text="${osa.getLkm()}">0</span> <span th:text="${osa.getYksikko()}">kpl</span> <span th:text="${osa.getRaakaAine().getNimi()}">e</span>
+                <br />
+                <pre th:text="${osa.getLisaohje()}"></pre>
+            </li>
+        </ol>
+        <h2 th:if="${ohje.length() &gt; 0}">Ohje</h2>
+        <pre th:text="${ohje}"></pre>
+        <br />
+        <a href="/">Palaa</a>
+    </body>
+    
+</html>

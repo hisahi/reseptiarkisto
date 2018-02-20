@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Reseptiarkisto</title>
+    </head>
+    <body>
+        <h1>Reseptiarkisto</h1>
+        <p>Tervetuloa reseptiarkistoon.</p>
+        <h2>Reseptit</h2>
+        <ul>
+            <li th:each="annos : ${annoslista}">
+                <a th:href="${'annos/' + annos.getId()}" th:text="${annos.getNimi()}">
+                    null
+                </a>
+            </li>
+        </ul>
+        <h2>Mahdolliset raaka-aineet</h2>
+        <ul>
+            <li th:each="aine : ${ainelista}">
+                <span th:text="${aine.getNimi()}">
+                    null
+                </span>
+            </li>
+        </ul>
+        <h2>Toiminnot</h2>
+        <ul>
+            <li><a href="uusiaine">Luo uusi raaka-aine</a></li>
+            <li th:if="${raakaainecount} &gt; 0"><a href="uusiannos">Luo uusi resepti</a></li>
+            <li><a href="ainetilastot">Katso raaka-aineiden käyttötilastot</a></li>
+        </ul>
+    </body>
+    
+</html>
