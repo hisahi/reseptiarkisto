@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,7 +83,7 @@ public class AnnosDao implements Dao<Annos, Integer> {
     private Annos save(Annos object) throws SQLException {
         int id = -1;
         try (Connection conn = db.getConnection()) {
-            try (PreparedStatement stmt = conn.prepareStatement("INSERT INTO Annos (nimi, ohje) VALUES (?, ?)")) {
+            try (PreparedStatement stmt = conn.prepareStatement("INSERT INTO Annos (nimi, ohje) VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS)) {
                 stmt.setString(1, object.getNimi());
                 stmt.setString(2, object.getOhje());
                 int rows = stmt.executeUpdate();
