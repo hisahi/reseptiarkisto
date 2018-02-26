@@ -50,8 +50,13 @@ public class Main {
         
         Spark.post("uusiaine", (req, res) -> {
             String nimi = req.queryParams("nimi");
+            if (nimi.isEmpty()) {
+                res.redirect("uusiaine");
+                return null;
+            }
             rdao.saveOrUpdate(new RaakaAine(RaakaAine.AUTO_ID, nimi));
             HashMap map = new HashMap<>();
+            // Thymeleaf sanitizes this on its own
             map.put("text", "Raaka-aine '" + nimi + "' on lisätty onnistuneesti.");
             return new ModelAndView(map, "ok");
         }, new ThymeleafTemplateEngine());
@@ -65,8 +70,12 @@ public class Main {
         }, new ThymeleafTemplateEngine());
         
         Spark.post("uusiannos", (req, res) -> {
-            HashMap map = new HashMap<>();
             String nimi = req.queryParams("nimi");
+            if (nimi.isEmpty()) {
+                res.redirect("uusiannos");
+                return null;
+            }
+            HashMap map = new HashMap<>();
             if (nimi.length() < 1) throw new IllegalArgumentException();
             String ohje = req.queryParams("ohje");
             int j = 1;
@@ -89,6 +98,7 @@ public class Main {
                 a.addRaakaAine(ara);
             }
             adao.saveOrUpdate(a);
+            // Thymeleaf sanitizes this on its own
             map.put("text", "Resepti '" + nimi + "' on lisätty onnistuneesti.");
             return new ModelAndView(map, "ok");
         }, new ThymeleafTemplateEngine());
@@ -96,6 +106,7 @@ public class Main {
         Spark.get("annos/:id", (req, res) -> {
             Annos a = adao.findOne(Integer.parseInt(req.params(":id")));
             HashMap map = new HashMap<>();
+            // Thymeleaf sanitizes these on its own
             map.put("nimi", a.getNimi());
             map.put("ainesosat", a.getRaakaAineet());
             map.put("ohje", a.getOhje());
